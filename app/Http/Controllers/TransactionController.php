@@ -8,10 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\TransactionStoreRequest;
 use App\Http\Requests\TransactionUpdateRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class TransactionController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $month = request('month') ?: now()->format('Y-m');
         $transactions = Transaction::query()
@@ -42,21 +44,21 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         return view('transactions.create', [
             'categories' => Category::all()
         ]);
     }
 
-    public function store(TransactionStoreRequest $request)
+    public function store(TransactionStoreRequest $request): RedirectResponse
     {
         auth()->user()->transactions()->create($request->validated());
         session()->flash('success-toast', 'Transaction created successfully.');
         return redirect()->route('transactions.index');
     }
 
-    public function edit(Transaction $transaction)
+    public function edit(Transaction $transaction): View
     {
         $this->authorize('edit', $transaction);
         return view('transactions.edit', [
@@ -65,7 +67,7 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function update(TransactionUpdateRequest $request, Transaction $transaction)
+    public function update(TransactionUpdateRequest $request, Transaction $transaction): RedirectResponse
     {
         $this->authorize('update', $transaction);
         $transaction->update($request->validated());
@@ -73,7 +75,7 @@ class TransactionController extends Controller
         return redirect()->route('transactions.index');
     }
 
-    public function destroy(Transaction $transaction)
+    public function destroy(Transaction $transaction): RedirectResponse
     {
         $this->authorize('destroy', $transaction);
         $transaction->delete();

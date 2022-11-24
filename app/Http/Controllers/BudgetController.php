@@ -8,11 +8,13 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\BudgetUpdateRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class BudgetController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $month = request('month') ?: now()->format('Y-m');
         $budgets = Budget::query()
@@ -39,14 +41,14 @@ class BudgetController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         return view('budgets.create', [
             'categories' => Category::all()
         ]);
     }
 
-    public function store(BudgetStoreRequest $request)
+    public function store(BudgetStoreRequest $request): RedirectResponse
     {
         $data = $request->validated();
         $datePieces = explode("-", $data['date']);
@@ -87,14 +89,14 @@ class BudgetController extends Controller
         return true;
     }
 
-    public function edit(Budget $budget)
+    public function edit(Budget $budget): View
     {
         $this->authorize('edit', $budget);
         $categories = Category::all();
         return view('budgets.edit', compact('budget', 'categories'));
     }
 
-    public function update(BudgetUpdateRequest $request, Budget $budget)
+    public function update(BudgetUpdateRequest $request, Budget $budget): RedirectResponse
     {
         $this->authorize('update', $budget);
 
@@ -128,7 +130,7 @@ class BudgetController extends Controller
         ]);
     }
 
-    public function destroy(Budget $budget)
+    public function destroy(Budget $budget): RedirectResponse
     {
         $this->authorize('destroy', $budget);
         $budget->delete();

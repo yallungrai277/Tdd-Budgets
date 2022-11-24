@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -33,5 +35,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('budgets', BudgetController::class)->except('show');
 });
 
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('products.index');
+});
+
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::put('/{product}', [CartController::class, 'update'])->name('cart.update');
+});
 
 require __DIR__ . '/auth.php';
