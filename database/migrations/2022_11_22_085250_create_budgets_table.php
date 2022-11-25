@@ -28,6 +28,10 @@ return new class extends Migration
                 'year',
                 'month'
             ]);
+            $table->index([
+                'category_id',
+                'user_id'
+            ]);
             $table->timestamps();
         });
     }

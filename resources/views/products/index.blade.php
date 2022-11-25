@@ -6,40 +6,59 @@
     </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 sm:grid-cols-2 ">
-                @forelse ($products as $product)
-                    <div class="w-full px-4 lg:px-0">
-                        <div class="p-3 bg-white rounded shadow-md">
-                            <div class="">
-                                <div class="relative w-full mb-3 h-62 lg:mb-0">
-                                    <img src="{{ asset('assets/images/no-product-image.png') }}" alt="Just a flower"
-                                        class="object-fill w-full h-full rounded">
-                                </div>
-                                <div class="flex-auto
-                                        p-2 justify-evenly">
-                                    <div class="flex flex-wrap ">
-                                        <div class="flex items-center justify-between w-full min-w-0 ">
-                                            <h2 class="mr-auto text-lg cursor-pointer hover:text-gray-900 ">
-                                                {{ $product->name }}
-                                            </h2>
-                                        </div>
-                                    </div>
-                                    <div class="mt-1 text-xl font-semibold">${{ $product->price }}</div>
-                                    <form action="{{ route('cart.update', $product->id) }}" method="POST">
-                                        @method('PUT')
-                                        @csrf
-                                        <button> Add to cart</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    No products found
-                @endforelse
-            </div>
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="py-3 px-6">
+                            ID
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Price
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($products as $product)
+                        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <th scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $product->id }}
+                            </th>
+                            <th scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $product->name }}
+                            </th>
+                            <th scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $product->price }}
+                            </th>
+                            <th scope="row">
+                                <form action="{{ route('cart.update', $product->id) }}" method="POST">
+                                    @method('PUT')
+                                    @csrf
+                                    <button type="submit">Add to cart</button>
+                                </form>
+                            </th>
+                        </tr>
+                    @empty
+                        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <th scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            </th>
+                            <td class="py-4 px-6">
+                            </td>
+                            <td style="text-align:center">No products</td>
+                            <td></td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
-
-
 </x-app-layout>

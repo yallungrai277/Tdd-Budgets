@@ -50,6 +50,19 @@ class CartTest extends TestCase
         $this->assertEquals($cart->totalPrice(), 60);
     }
 
+    public function test_it_has_a_total_price_in_cents(): void
+    {
+        $products = Product::factory(3)->create([
+            'price' => 10
+        ]);
+        $cart = new Cart();
+        foreach ($products as $product) {
+            $cart->add($product, 2);
+        }
+
+        $this->assertEquals($cart->totalPriceInCents(), 6000);
+    }
+
     public function test_it_throws_an_exception_if_product_is_not_found_in_the_cart_while_decrementing_and_incrementing_quantity()
     {
         $this->expectException(CartException::class);
@@ -103,5 +116,64 @@ class CartTest extends TestCase
         $cart->decrementQuantity($product);
 
         $this->assertEquals(0, $cart->items->count());
+    }
+
+    public function test_it_can_remove_item_from_the_cart()
+    {
+        $product = Product::factory()->create([
+            'price' => 10
+        ]);
+
+        $cart = new Cart();
+
+        $cart->add($product, 1);
+        $cart->removeItem($product);
+
+        $this->assertEquals(0, $cart->items->count());
+    }
+
+    public function test_it_can_clear_cart()
+    {
+        $product1 = Product::factory()->create([
+            'price' => 10
+        ]);
+        $product2 = Product::factory()->create([
+            'price' => 40
+        ]);
+        $product3 = Product::factory()->create([
+            'price' => 50
+        ]);
+
+        $cart = new Cart();
+
+        $cart->add($product1, 1);
+        $cart->add($product2, 3);
+        $cart->add($product3, 2);
+        $cart->clear();
+
+        $this->assertCount(0, $cart->items);
+    }
+
+    public function test_it_can_check_cart_items()
+    {
+        $product1 = Product::factory()->create([
+            'price' => 10
+        ]);
+        $product2 = Product::factory()->create([
+            'price' => 40
+        ]);
+        $product3 = Product::factory()->create([
+            'price' => 50
+        ]);
+
+        $cart = new Cart();
+
+        $cart->add($product1, 1);
+        $cart->add($product2, 3);
+        $cart->add($product3, 2);
+
+        $this->assertTrue($cart->hasItems());
+        $cart->clear();
+        $this->assertNotTrue($cart->hasItems());
     }
 }

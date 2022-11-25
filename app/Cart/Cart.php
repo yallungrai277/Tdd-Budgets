@@ -17,6 +17,11 @@ class Cart
         }
     }
 
+    public function hasItems(): bool
+    {
+        return $this->items->count();
+    }
+
     public function add(Product $product, int $qty = 1): void
     {
         $this->items->put($product->id, $this->setCartItem($product, $qty));
@@ -32,7 +37,12 @@ class Cart
         return round($totalPrice, 2);
     }
 
-    public function incrementQuantity(Product $product)
+    public function totalPriceInCents(): int
+    {
+        return $this->totalPrice() * 100;
+    }
+
+    public function incrementQuantity(Product $product): void
     {
         if (is_null($item = $this->items->get($product->id))) {
             throw new CartException('Item cannot be found in the cart.');
@@ -42,7 +52,7 @@ class Cart
         session()->put('cart', $this);
     }
 
-    public function decrementQuantity(Product $product)
+    public function decrementQuantity(Product $product): void
     {
         if (is_null($item = $this->items->get($product->id))) {
             throw new CartException('Item cannot be found in the cart.');
@@ -65,5 +75,20 @@ class Cart
             'quantity' => $qty,
             'line_item_total' => round($qty * $product->price, 2)
         ];
+    }
+
+    public function removeItem(Product $product): void
+    {
+        if (is_null($item = $this->items->get($product->id))) {
+            throw new CartException('Item cannot be found in the cart.');
+        }
+        $this->items->forget($product->id);
+        session()->put('cart', $this);
+    }
+
+    public function clear(): void
+    {
+        $this->items = collect();
+        session()->put('cart', $this);
     }
 }

@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\BudgetController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,12 @@ Route::prefix('products')->group(function () {
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');
     Route::put('/{product}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/{product}', [CartController::class, 'destroy'])->name('cart.item.destroy');
+    Route::delete('/', [CartController::class, 'clear'])->name('cart.clear');
+});
+
+Route::prefix('/orders')->group(function () {
+    Route::post('/', [OrderController::class, 'store'])->name('orders.store');
 });
 
 require __DIR__ . '/auth.php';

@@ -5,119 +5,82 @@
         </h2>
     </x-slot>
     <div class="py-12">
+
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="py-12">
-                <div class="max-w-md mx-auto bg-gray-100 shadow-lg rounded-lg  md:max-w-5xl">
-                    <div class="md:flex ">
-                        <div class="w-full p-4 px-5 py-5">
-                            <div class="md:grid md:grid-cols-3 gap-2 ">
-                                <div class="col-span-2 p-5">
-                                    <h1 class="text-xl font-medium ">Shopping Cart</h1>
-                                    @forelse ($cart->items as $item)
-                                        <div class="flex justify-between items-center mt-6 pt-6">
-                                            <div class="flex  items-center">
-                                                <img src="{{ asset('assets/images/no-product-image.png') }}"
-                                                    width="60" class="rounded-full ">
-                                                <div class="flex flex-col ml-3">
-                                                    <span class="md:text-md font-medium">{{ $item['name'] }}</span>
-                                                    <span class="text-xs font-light text-gray-400"
-                                                        style="cursor: pointer">#{{ $item['price'] }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="flex justify-center items-center">
-                                                <div class="pr-8 flex ">
-                                                    <span class="font-semibold">-</span>
-                                                    <input type="text"
-                                                        class="focus:outline-none bg-gray-100 border h-6 w-8 rounded text-sm px-2 mx-2"
-                                                        value="1">
-                                                    <span class="font-semibold" style="cursor: pointer">+</span>
-                                                </div>
-                                                <div class="pr-8 ">
-                                                    <span
-                                                        class="text-xs font-medium">${{ $item['line_item_total'] }}</span>
-                                                </div>
-                                                <div>
-                                                    <i class="fa fa-close text-xs font-medium"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @empty
-                                        No items in the cart.
-                                    @endforelse
-                                    <div class="flex justify-between items-center mt-6 pt-6 border-t">
-                                        <div class="flex items-center">
-                                            <i class="fa fa-arrow-left text-sm pr-2"></i>
-                                        </div>
-                                        <div class="flex justify-center items-end">
-                                            <span class="text-sm font-medium text-gray-400 mr-1">Total:</span>
-                                            <span class="text-lg font-bold text-gray-800 ">
-                                                ${{ $cart->totalPrice() }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class=" p-5 bg-gray-800 rounded overflow-visible">
-                                    <span class="text-xl font-medium text-gray-100 block pb-3">Card Details</span>
-                                    <span class="text-xs text-gray-400 ">Card Type</span>
-                                    <div class="overflow-visible flex justify-between items-center mt-2">
-                                        <div class="rounded w-52 h-28 bg-gray-500 py-2 px-4 relative right-10">
-                                            <span class="italic text-lg font-medium text-gray-200 underline">VISA</span>
-                                            <div class="flex justify-between items-center pt-4 ">
-                                                <span class="text-xs text-gray-200 font-medium">****</span>
-                                                <span class="text-xs text-gray-200 font-medium">****</span>
-                                                <span class="text-xs text-gray-200 font-medium">****</span>
-                                                <span class="text-xs text-gray-200 font-medium">****</span>
-                                            </div>
-                                            <div class="flex justify-between items-center mt-3">
-                                                <span class="text-xs  text-gray-200">Giga Tamarashvili</span>
-                                                <span class="text-xs  text-gray-200">12/18</span>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-center  items-center flex-col">
-                                            <img src="https://img.icons8.com/color/96/000000/mastercard-logo.png"
-                                                width="40" class="relative right-5" />
-                                            <span
-                                                class="text-xs font-medium text-gray-200 bottom-2 relative right-5">mastercard.</span>
-                                        </div>
-                                    </div>
-                                    <div class="flex justify-center flex-col pt-3">
-                                        <label class="text-xs text-gray-400 ">Name on Card</label>
-                                        <input type="text"
-                                            class="focus:outline-none w-full h-6 bg-gray-800 text-white placeholder-gray-300 text-sm border-b border-gray-600 py-4"
-                                            placeholder="Giga Tamarashvili">
-                                    </div>
-                                    <div class="flex justify-center flex-col pt-3">
-                                        <label class="text-xs text-gray-400 ">Card Number</label>
-                                        <input type="text"
-                                            class="focus:outline-none w-full h-6 bg-gray-800 text-white placeholder-gray-300 text-sm border-b border-gray-600 py-4"
-                                            placeholder="****     ****      ****      ****">
-                                    </div>
-                                    <div class="grid grid-cols-3 gap-2 pt-2 mb-3">
-                                        <div class="col-span-2 ">
-                                            <label class="text-xs text-gray-400">Expiration Date</label>
-                                            <div class="grid grid-cols-2 gap-2">
-                                                <input type="text"
-                                                    class="focus:outline-none w-full h-6 bg-gray-800 text-white placeholder-gray-300 text-sm border-b border-gray-600 py-4"
-                                                    placeholder="mm">
-                                                <input type="text"
-                                                    class="focus:outline-none w-full h-6 bg-gray-800 text-white placeholder-gray-300 text-sm border-b border-gray-600 py-4"
-                                                    placeholder="yyyy">
-                                            </div>
-                                        </div>
-                                        <div class="">
-                                            <label class="text-xs text-gray-400">CVV</label>
-                                            <input type="text"
-                                                class="focus:outline-none w-full h-6 bg-gray-800 text-white placeholder-gray-300 text-sm border-b border-gray-600 py-4"
-                                                placeholder="XXX">
-                                        </div>
-                                    </div>
-                                    <button
-                                        class="h-12 w-full bg-blue-500 rounded focus:outline-none text-white hover:bg-blue-600">Check
-                                        Out</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            @if ($cart->hasItems())
+                <form method="POST" action="{{ route('cart.clear') }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                        class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150'>
+                        Clear Cart</button>
+                </form>
+                <br>
+            @endif
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="py-3 px-6">
+                            Name
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Quantity
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Total
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($cart->items as $item)
+                        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <th scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $item['name'] }}
+                            </th>
+                            <th scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $item['price'] }}
+                            </th>
+                            <th scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $item['quantity'] }}
+                            </th>
+                            <th scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $item['line_item_total'] }}
+                            </th>
+
+                            <th scope="row">
+                                <form action="{{ route('cart.item.destroy', $item['id']) }}" method="POST">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit">Remove from cart</button>
+                                </form>
+                            </th>
+                        </tr>
+                    @empty
+                        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <th scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            </th>
+                            <td class="py-4 px-6">
+                            </td>
+                            <td style="text-align:center">No products in the cart</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+            <div class="mt-2">
+                Total: ${{ $cart->totalPrice() }}
             </div>
         </div>
     </div>
