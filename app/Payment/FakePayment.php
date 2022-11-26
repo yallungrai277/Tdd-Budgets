@@ -2,6 +2,8 @@
 
 namespace App\Payment;
 
+use Stripe\Charge;
+
 class FakePayment implements PaymentContract
 {
     private $total;
@@ -21,8 +23,8 @@ class FakePayment implements PaymentContract
         return $this->total;
     }
 
-    public function charge(int $total, string $token)
+    public function charge(int $amount, string $cardToken)
     {
-        $this->total = $total;
+        $this->total = $amount;
     }
 }

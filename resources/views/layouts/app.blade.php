@@ -15,6 +15,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{ $css ?? '' }}
 </head>
 
 <body class="font-sans antialiased">
@@ -46,6 +47,7 @@
             toastr.error('{{ session()->get('error-toast') }}');
         @endif
     </script>
+    {{ $js ?? '' }}
 </body>
 
 </html>

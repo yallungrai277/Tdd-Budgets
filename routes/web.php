@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
@@ -34,6 +35,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('transactions', TransactionController::class)->except('show');
     Route::resource('budgets', BudgetController::class)->except('show');
+
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 });
 
 Route::prefix('products')->group(function () {
@@ -45,6 +48,11 @@ Route::prefix('cart')->group(function () {
     Route::put('/{product}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/{product}', [CartController::class, 'destroy'])->name('cart.item.destroy');
     Route::delete('/', [CartController::class, 'clear'])->name('cart.clear');
+});
+
+Route::prefix('checkout')->group(function () {
+    Route::get('/', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::get('/status', [CheckoutController::class, 'status'])->name('checkout.status');
 });
 
 Route::prefix('/orders')->group(function () {

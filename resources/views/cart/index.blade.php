@@ -7,17 +7,22 @@
     <div class="py-12">
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if ($cart->hasItems())
-                <form method="POST" action="{{ route('cart.clear') }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit"
-                        class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150'>
-                        Clear Cart</button>
-                </form>
-                <br>
-            @endif
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <div class="flex gap-4">
+                @if ($cart->hasItems())
+                    <form method="POST" action="{{ route('cart.clear') }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                            class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150'>
+                            Clear Cart</button>
+                    </form>
+                    <br>
+                @endif
+                <a href="{{ route('products.index') }}"
+                    class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150'>
+                    Continue Shopping</a>
+            </div>
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-3">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="py-3 px-6">
@@ -79,9 +84,14 @@
                     @endforelse
                 </tbody>
             </table>
-            <div class="mt-2">
+            <div class="mt-3">
                 Total: ${{ $cart->totalPrice() }}
             </div>
+            @if ($cart->hasItems())
+                <a href="{{ route('checkout.index') }}"
+                    class='inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150'>
+                    Checkout</a>
+            @endif
         </div>
     </div>
 </x-app-layout>
