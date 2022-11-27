@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
@@ -57,6 +58,10 @@ Route::prefix('checkout')->group(function () {
 
 Route::prefix('/orders')->group(function () {
     Route::post('/', [OrderController::class, 'store'])->name('orders.store');
+});
+
+Route::prefix('/download')->group(function () {
+    Route::get('terms-and-conditions', [DownloadController::class, 'termsAndConditions'])->name('download.terms.and.conditions');
 });
 
 require __DIR__ . '/auth.php';

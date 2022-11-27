@@ -78,9 +78,9 @@ class TransactionTest extends TestCase
 
         $this->actAsAuthenticatedUser($this->user)
             ->get('/transactions')
-            ->assertSee($transaction->description)
-            ->assertSee($transaction->category?->name)
-            ->assertSee($transaction->amount);
+            ->assertSeeText($transaction->description)
+            ->assertSeeText($transaction->category?->name)
+            ->assertSeeText($transaction->amount);
     }
 
     public function test_it_can_filter_transactions_by_category()
@@ -260,8 +260,9 @@ class TransactionTest extends TestCase
         ]);
         $this->actAsAuthenticatedUser($this->user)
             ->get('transactions/' . $transaction->id . '/edit')
-            ->assertSee($transaction->description)
-            ->assertSee($transaction->amount);
+            ->assertSee('value="' . $transaction->description . '"', false)
+            ->assertSee('value="' . $transaction->amount . '"', false)
+            ->assertViewHas('transaction', $transaction);
     }
 
     public function test_it_cannot_render_edit_transaction_page_for_other_users_transaction()
@@ -372,10 +373,12 @@ class TransactionTest extends TestCase
             'category_id' => Category::factory()->create()->id
         ]);
 
+        $this->assertModelExists($transaction);
         $this->actAsAuthenticatedUser($this->user)
             ->put('transactions/' . $transaction->id, array_merge($this->data(), array_merge($this->data(), [
                 'category_id' => $otherCategory->id
             ])));
+
 
         $transaction = $transaction->fresh();
         $this->assertEquals($transaction->category_id, $otherCategory->id);
@@ -403,6 +406,7 @@ class TransactionTest extends TestCase
         $this->assertDatabaseMissing('transactions', [
             'id' => $transaction->id
         ]);
+        $this->assertModelMissing($transaction);
     }
 
     public function test_it_cannot_delete_other_users_transaction()

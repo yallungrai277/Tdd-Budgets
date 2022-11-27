@@ -62,6 +62,10 @@
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 
+                            <x-dropdown-link :href="route('download.terms.and.conditions')">
+                                {{ __('Terms and Conditions') }}
+                            </x-dropdown-link>
+
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -118,17 +122,20 @@
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Profile') }}
                         </x-response-nav-link>
+                        <x-responsive-nav-link :href="route('download.terms.and.conditions')">
+                            {{ __('Terms and Conditions') }}
+                            </x-response-nav-link>
 
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
 
-                            <x-responsive-nav-link :href="route('logout')"
-                                onclick="event.preventDefault();
+                                <x-responsive-nav-link :href="route('logout')"
+                                    onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-responsive-nav-link>
-                        </form>
+                                    {{ __('Log Out') }}
+                                </x-responsive-nav-link>
+                            </form>
                 </div>
             </div>
         </div>
