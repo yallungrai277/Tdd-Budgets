@@ -64,4 +64,25 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updatePhoto(Request $request)
+    {
+        $data = $request->validate([
+            'photo' => [
+                'required',
+                'image',
+                'mimes:png,jpg',
+                'max:2048'
+            ]
+        ]);
+
+        $file = $data['photo'];
+        $request->user()->uploadProfilePhoto($file);
+
+        return redirect()->back()->with('status', 'profile-updated');
+    }
 }

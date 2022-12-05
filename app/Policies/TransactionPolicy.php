@@ -10,6 +10,11 @@ class TransactionPolicy
 {
     use HandlesAuthorization;
 
+    public function show(User $user, Transaction $transaction)
+    {
+        return $transaction->user_id === $user->id;
+    }
+
     public function edit(User $user, Transaction $transaction)
     {
         return $transaction->user_id === $user->id;

@@ -3,12 +3,14 @@
 namespace Tests\Feature;
 
 use App\Cart\Cart;
+use App\Mail\OrderCreated;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use App\Payment\FakePayment;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -27,8 +29,6 @@ class OrderTest extends TestCase
 
     public function test_orders_can_be_seen_on_orders_page_along_with_items(): void
     {
-
-
         $product1 = Product::factory()->create([
             'price' => 10
         ]);
@@ -218,6 +218,7 @@ class OrderTest extends TestCase
 
     public function test_it_can_create_products_with_correct_amount_and_quantities_for_order_after_purchase()
     {
+        Mail::fake();
         $product1 = Product::factory()->create([
             'price' => 10
         ]);
@@ -245,6 +246,8 @@ class OrderTest extends TestCase
         ]);
 
         $order = Order::first();
+
+        Mail::assertQueued(OrderCreated::class);
 
         $this->assertDatabaseHas('order_product', [
             'order_id' => $order->id,

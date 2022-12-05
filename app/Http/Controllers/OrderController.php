@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Payment\PaymentContract;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\OrderStoreRequest;
+use App\Jobs\OrderCreated;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -61,6 +62,7 @@ class OrderController extends Controller
             auth()->login($user);
         }
 
+        OrderCreated::dispatch($order);
         return redirect()->route('orders.index');
     }
 

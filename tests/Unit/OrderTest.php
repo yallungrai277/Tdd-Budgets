@@ -3,9 +3,13 @@
 namespace Tests\Unit;
 
 use App\Cart\Cart;
+use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Product;
-use Tests\TestCase;
+use App\Jobs\OrderCreated;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Queue;
+use App\Mail\OrderCreated as MailOrderCreated;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class OrderTest extends TestCase
@@ -56,5 +60,21 @@ class OrderTest extends TestCase
             'quantity' => 4,
             'total' => 8000
         ]);
+    }
+
+    public function test_order_reference_number_will_automatically_be_generated(): void
+    {
+        $order = Order::factory()->create();
+        $this->assertNotNull($order->order_reference_number);
+        $this->assertEquals(Order::ORDER_REF_NUMBER_STRING . '1', $order->order_reference_number);
+    }
+
+    public function test_order_email_can_be_sent_successfully()
+    {
+        Mail::fake();
+        $order = Order::factory()->create();
+        (new OrderCreated($order))->handle();
+
+        Mail::assertQueued(MailOrderCreated::class);
     }
 }

@@ -13,6 +13,9 @@
                         <th scope="col" class="py-3 px-6">
                             ID
                         </th>
+                        <th scope="col" class="py-3 px-6">
+                            Ref Number
+                        </th>
                         <th>
                             Total
                         </th>
@@ -27,6 +30,10 @@
                             <th scope="row"
                                 class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ $order->id }}
+                            </th>
+                            <th scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                ${{ $order->order_reference_number }}
                             </th>
                             <th scope="row"
                                 class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">

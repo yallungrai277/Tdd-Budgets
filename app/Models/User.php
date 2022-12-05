@@ -3,15 +3,20 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\HasProfilePhoto;
+use App\Concerns\HasProfilePhotoInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasProfilePhotoInterface
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasProfilePhoto;
+
+    public const PROFILE_PHOTO_UPLOAD_PATH = 'profile-photo';
 
     /**
      * The attributes that are mass assignable.
@@ -51,5 +56,10 @@ class User extends Authenticatable
     public function budgets(): HasMany
     {
         return $this->hasMany(Budget::class);
+    }
+
+    public function getProfilePhotoFolder(): string
+    {
+        return self::PROFILE_PHOTO_UPLOAD_PATH . DIRECTORY_SEPARATOR . $this->id;
     }
 }

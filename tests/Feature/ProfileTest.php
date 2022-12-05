@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
@@ -93,5 +95,23 @@ class ProfileTest extends TestCase
             ->assertRedirect('/profile');
 
         $this->assertNotNull($this->user->fresh());
+    }
+
+    public function test_user_can_upload_profile_photo()
+    {
+        $this->withExceptionHandling();
+        Storage::fake();
+        $response = $this
+            ->actAsAuthenticatedUser($this->user)
+            ->from('/profile')
+            ->patch('/profile/photo', [
+                'photo' => UploadedFile::fake()->image('image1.jpg')
+            ]);
+
+        $response
+            ->assertRedirect('/profile')
+            ->assertSessionDoesntHaveErrors();
+
+        Storage::assertExists($this->user->getProfilePhotoFolder() . DIRECTORY_SEPARATOR . $this->user->profile_photo);
     }
 }

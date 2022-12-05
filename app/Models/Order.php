@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
@@ -16,6 +17,15 @@ class Order extends Model
     protected $guarded = [
         'id'
     ];
+
+    const ORDER_REF_NUMBER_STRING = 'ORD-';
+
+    protected static function booted()
+    {
+        static::creating(function (Order $order) {
+            $order->order_reference_number = self::ORDER_REF_NUMBER_STRING . self::max('id') + 1;
+        });
+    }
 
     public function total(): Attribute
     {
@@ -41,5 +51,10 @@ class Order extends Model
                 'total' => $product['line_item_total']
             ]);
         }
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
